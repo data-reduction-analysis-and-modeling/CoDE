@@ -74,7 +74,6 @@ class Structure(object):
         """
         Load structure from file
         """
-
         # assume file can be read from within ASE
         self._atoms = read(file)
         

@@ -39,6 +39,22 @@ class Calculator(object):
         if wavelength is not None:
             self.parameters['wavelength'] = wavelength
 
+    @property
+    def structure(self):
+        return self.parameters['structure']
+
+    @structure.setter
+    def structure(self, value):
+        self.parameters['structure'] = value
+
+    @property
+    def wavelength(self):
+        return self.parameters['wavelength']
+
+    @wavelength.setter
+    def wavelength(self, value):
+        self.parameters['wavelength'] = value
+
     def loadPlugin(self, engine=""):
         """
         Instantiate a 3rd party computational plugin

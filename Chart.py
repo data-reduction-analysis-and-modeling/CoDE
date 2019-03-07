@@ -6,11 +6,36 @@ class Chart(object):
     """
     Generic object for various charts
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, filename=""):
         """
         """
         self._chart = None
-        self._radiation = Radiation()
+        #self._radiation = Radiation()
+        self.dimension = 1
+        self.filename = filename
+
+        # state of this object
+        self.state = {}
+        if filename:
+            self.load(filename=filename)
+            self.state['filename'] = filename
+
+    def load(self, filename=""):
+        """
+        Load the data and set the state
+        """
+        pass
+
+    def setMplChart(self, chart=None):
+        """
+        Assign a matplotlib chart to the state
+        """
+
+    def getMplChart(self):
+        """
+        Return the matplotlib representation of the current chart
+        """
+        return self.state['mpl']
 
     def evaluateBackground(self):
         """

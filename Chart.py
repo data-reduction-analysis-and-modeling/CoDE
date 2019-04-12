@@ -1,6 +1,40 @@
 """
 CoDE Atom structure
 """
+# image loaders
+import fabio as fabio
+# cctbx
+# crysfml
+
+
+class ChartData(object):
+    """
+    holder for 1d/2d profile data
+    """
+    def __init__(self, parent=None):
+        """
+        Initialize chart data fields
+        """
+        # list of x coordinates
+        self.x = None
+        # list of y coordinates
+        self.y = None
+        # list of x coordinate errors
+        self.dx = None
+        # list of y coordinate errors
+        self.dy = None
+        # list of intensities up
+        self.iup = None
+        # list of intensities down
+        self.idown = None
+
+
+    def numPoints(self):
+        """
+        Returns the number of points in the set
+        """
+        return len(self.x) * len(self.y)
+
 
 class Chart(object):
     """
@@ -9,10 +43,11 @@ class Chart(object):
     def __init__(self, parent=None, filename=""):
         """
         """
-        self._chart = None
         #self._radiation = Radiation()
         self.dimension = 1
         self.filename = filename
+
+        self.data = ChartData(self)
 
         # state of this object
         self.state = {}
@@ -24,7 +59,23 @@ class Chart(object):
         """
         Load the data and set the state
         """
-        pass
+        # use fabio
+        try:
+            image = fabio.open(filename)
+        except Exception as ex:
+            print("Something bad happened: " + str(ex))
+            return
+        # convert fabio object into ChartData
+        self.data = self.fabioToChart(image=image)
+
+    def fabioToChart(self, image=None):
+        """
+        Convert fabio object to our ChartData
+        """
+        chart_data = ChartData()
+
+        for row in image.rows():
+            chart_data
 
     def setMplChart(self, chart=None):
         """

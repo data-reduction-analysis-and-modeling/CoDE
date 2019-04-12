@@ -1,7 +1,7 @@
 from typing import List
 from typing import NewType
 from ase import Atoms as ASE_Atoms
-from ase.io import read
+from ase.io import read as ASE_read
 
 StringList = List[str]
 
@@ -75,7 +75,7 @@ class Structure(object):
         Load structure from file
         """
         # assume file can be read from within ASE
-        self._atoms = read(file)
+        self._atoms = ASE_read(file)
         
     def aseStructure(self):
         """

@@ -21,6 +21,7 @@ import numpy as np
 from Structure import Structure
 from Calculator import Calculator
 from Chart import Chart
+import xrayutilities as xu
 
 def structure_test():
     """
@@ -32,16 +33,21 @@ def structure_test():
     # file of some type
     test_file = "diamond.pdb"
     dna_file = "dna.pdb"
+    fox_file1 = "fox7.car"
 
     # Generate Structure objects
     diamond = Structure(file=test_file)
     dna = Structure(file=dna_file)
+    fox = Structure(file=fox_file1)
 
-    ase_dna = dna.aseStructure()
-    ase_viewer(ase_dna)
+    #ase_dna = dna.aseStructure()
+    #ase_viewer(ase_dna)
 
-    ase_diamond = diamond.aseStructure()
-    ase_viewer(ase_diamond)
+    #ase_diamond = diamond.aseStructure()
+    #ase_viewer(ase_diamond)
+
+    ase_fox = fox.aseStructure()
+    ase_viewer(ase_fox)
 
 
 def chart_test():
@@ -67,17 +73,14 @@ def calculator_test():
     # and define initial state
     calc = Calculator(structure=diamond, wavelength=1.2)
 
-
-
     # calculate XRD for the structure, using defined engine
-    # calc.calculateXRD(structure=diamond, engine="ASE")
+    calc.calculateXRD(structure=diamond, engine="ASE")
 
     # calculate XRD for the structure, using default engine
-    chart = calc.calculateXRD()
-
+    #chart = calc.calculateXRD()
 
     # calculate XRD for the new structure, using default state
-    #calc.calculateXRD(structure=dna)
+    calc.calculateXRD(structure=dna)
 
 
     # calculate SANS for the structure, using default engine
@@ -86,6 +89,9 @@ def calculator_test():
     # calculate SANS for a new structure, using default engine
     #calc.calculateSANS(structure=dna)
 
+    # xrayutilities
+    #calc.calculateXRD(structure=fe)
+
 if __name__ == "__main__":
 
     structure_test()
@@ -93,19 +99,21 @@ if __name__ == "__main__":
     # files for testing
     test_file = "diamond.pdb"
     dna_file = "dna.pdb"
+    fox_file1 = "fox7.car"
 
     # Generate Structure objects for use in calculator_test
     diamond = Structure(file=test_file)
     dna = Structure(file=dna_file)
+    fox7_1 = Structure(file=fox_file1)
 
     calculator_test()
 
     # Generate Chart objects for use in chart_test
-    test_file1d = "CF3Br.dat"
-    test_file2d = "test2d.dat"
-    chart_1d = Chart(filename=test_file1d)
-    chart_2d = Chart(filename=test_file2d)
+    #test_file1d = "CF3Br.dat"
+    #test_file2d = "test2d.dat"
+    #chart_1d = Chart(filename=test_file1d)
+    #chart_2d = Chart(filename=test_file2d)
 
-    chart_test()
+    #chart_test()
 
 

@@ -47,7 +47,7 @@ def structure_test():
     #ase_viewer(ase_diamond)
 
     ase_fox = fox.aseStructure()
-    ase_viewer(ase_fox)
+    #ase_viewer(ase_fox)
 
 
 def chart_test():
@@ -71,30 +71,33 @@ def calculator_test():
     """
     # instantiate default Calculator object
     # and define initial state
-    calc = Calculator(structure=diamond, wavelength=1.2)
+    calc = Calculator(structure=dna, wavelength=1.2)
 
     # calculate XRD for the structure, using defined engine
-    calc.calculateXRD(structure=diamond, engine="ASE")
+    #data_out = calc.calculateXRD(structure=diamond, engine="ASE")
 
     # calculate XRD for the structure, using default engine
-    #chart = calc.calculateXRD()
+    data_out = calc.calculateXRD()
 
-    # calculate XRD for the new structure, using default state
-    calc.calculateXRD(structure=dna)
+    # create a chart object
+    chart = Chart()
 
+    # add powder data to the chart. This needs to be made such that
+    # setData doesn't need a type (setData1D/setDataCrystal) but rather 
+    # gets set depending on the type of the argument passed
+    chart.setData1D(data_out)
 
-    # calculate SANS for the structure, using default engine
-    #calc.calculateSANS(structure=diamond)
+    # create MPL representation of the Chart object
+    #mpl_chart = chart.getMplChart()
+    #mpl_chart.show()
 
-    # calculate SANS for a new structure, using default engine
-    #calc.calculateSANS(structure=dna)
+    # or just show it directly
+    chart.show()
 
-    # xrayutilities
-    #calc.calculateXRD(structure=fe)
 
 if __name__ == "__main__":
 
-    structure_test()
+    #structure_test()
 
     # files for testing
     test_file = "diamond.pdb"
@@ -107,13 +110,4 @@ if __name__ == "__main__":
     fox7_1 = Structure(file=fox_file1)
 
     calculator_test()
-
-    # Generate Chart objects for use in chart_test
-    #test_file1d = "CF3Br.dat"
-    #test_file2d = "test2d.dat"
-    #chart_1d = Chart(filename=test_file1d)
-    #chart_2d = Chart(filename=test_file2d)
-
-    #chart_test()
-
 

@@ -83,8 +83,16 @@ class CalcPlugin_ASE(PluginBase):
         ase_atoms = structure.aseStructure()
 
         xrd_object = XrDebye(atoms=ase_atoms, wavelength=wavelength)
-        xrd_object.calc_pattern(x=np.arange(15, 30, 0.1), mode='XRD')
-        xrd_object.plot_pattern(filename=None)
+        # Equally spaced list of 2theta values
+        angles_list = np.arange(15, 30, 0.1)
+
+        # Get the xray diffraction pattern for these points
+        intensity_list = xrd_object.calc_pattern(x=np.arange(15, 30, 0.1), mode='XRD')
+
+        # Return the list of tuples
+        return zip(angles_list, intensity_list)
+
+        # xrd_object.plot_pattern(filename=None)
 
     def getSANS(self, **kwargs):
         """

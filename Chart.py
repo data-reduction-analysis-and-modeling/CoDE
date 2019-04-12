@@ -1,15 +1,18 @@
 """
-CoDE Atom structure
+CoDE Chart structure
 """
-# image loaders
+import numpy as np
+import matplotlib as mp
+import matplotlib.pyplot as plt
+
 import fabio as fabio
 # cctbx
 # crysfml
 
 
-class ChartData(object):
+class ChartDataPowder(object):
     """
-    holder for 1d/2d profile data
+    holder for 1d/2d powder profile data
     """
     def __init__(self, parent=None):
         """
@@ -35,6 +38,32 @@ class ChartData(object):
         """
         return len(self.x) * len(self.y)
 
+class ChartDataCrystal(object):
+    """
+    holder for hkl single crystal data
+    """
+    def __init__(self, parent=None):
+        """
+        Initialize chart data fields
+        """
+        # list of h indices
+        self.h = None
+        # list of k indices
+        self.k = None
+        # list of l indices
+        self.l = None
+        # list of intensities
+        self.intensity = None
+        # list of errors
+        self.sigma = None
+
+
+    def numPoints(self):
+        """
+        Returns the number of points in the set
+        """
+        return len(self.intensity)
+
 
 class Chart(object):
     """
@@ -47,13 +76,53 @@ class Chart(object):
         self.dimension = 1
         self.filename = filename
 
-        self.data = ChartData(self)
+        self.data = None
 
         # state of this object
         self.state = {}
+        self.state['data'] = self.data
+
         if filename:
             self.load(filename=filename)
             self.state['filename'] = filename
+
+    def setData1D(self, data):
+        """
+        Grab the 1d data coming from the calculator and convert into ChartDataPowder
+        [(x_1,y_1),(x_2, y_2),....] -> ChartDataPowder
+        """
+        x = []
+        y = []
+        for tup in data:
+            # cheaper to first create full list than to append to immutable np.array
+            x.append(tup[0])
+            y.append(tup[1])
+
+        # this is now a ChartDataPowder object
+        if self.data is None:
+            self.data = ChartDataPowder()
+        self.data.x = np.array(x)
+        self.data.y = np.array(y)
+
+        # TODO: extend to dx, dy etc.
+
+    def setDataHKL(self, data):
+        """
+        Grab the hkl data coming from the calculator and convert into ChartDataCrystal
+        [(h,k,l,int), ....] -> ChartDataCrystal
+        """
+        h = []
+        k = []
+        l = []
+        for tup in data:
+            # cheaper to first create full list than to append to immutable np.array
+            x.append(tup[0])
+            y.append(tup[1])
+
+        self.data.x = np.array(x)
+        self.data.y = np.array(y)
+
+        # TODO: extend to dx, dy etc.
 
     def load(self, filename=""):
         """
@@ -81,11 +150,23 @@ class Chart(object):
         """
         Assign a matplotlib chart to the state
         """
+        plt.clf()  # clear figure
+        ax = plt.gca()
+
+        ax.plot(self.data.x, self.data.y / np.max(self.data.y), '.-')
+        ax.set_xlabel('2$\\theta$')
+        ax.set_ylabel('Intensity')
+
+        #self.mplChart = ax
+        self.state['mpl'] = plt
 
     def getMplChart(self):
         """
         Return the matplotlib representation of the current chart
         """
+        if 'mpl' not in self.state:
+            self.setMplChart()
+
         return self.state['mpl']
 
     def evaluateBackground(self):
@@ -111,6 +192,15 @@ class Chart(object):
         Pawley peak finding refinements
         """
         pass
+
+    def show(self):
+        """
+        Show the current document
+        """
+        if not 'mpl' in self.state:
+            self.setMplChart()
+
+        plt.show()
 
 class PowderDiffractionChart(Chart):
     """

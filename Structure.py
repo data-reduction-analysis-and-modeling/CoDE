@@ -19,12 +19,20 @@ class Atom(object):
         """
         return self._symbol
 
+
 class Cell(object):
     """
     CoDE Cell structure, based on ASE Atom.Cell
     """
     def __init__(self, parent=None)->None:
-        pass
+
+        self._a = 5.0
+        self._b = 5.0
+        self._c = 5.0
+        self._alpha = 90.0
+        self._beta = 90.0
+        self._gamma = 90.0
+        
 
 class Atoms(object):
     """

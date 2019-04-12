@@ -103,7 +103,9 @@ class Calculator(object):
             wavelength = 1.5405981
 
         # call the XRD method on the ASE calculator plugin
-        self.activePlugin.getProperty('XRD', structure=structure, wavelength=wavelength)
+        result = self.activePlugin.getProperty('XRD', structure=structure, wavelength=wavelength)
+
+        return result
 
 
     def calculateSANS(self, structure=None, engine="", wavelength=None):
